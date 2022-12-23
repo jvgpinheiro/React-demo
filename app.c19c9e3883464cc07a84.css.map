@@ -1,0 +1,1 @@
+{"version":3,"file":"app.c19c9e3883464cc07a84.css","mappings":"AAAA,UAEI,WACA,YACA,qB","sources":["webpack://react/./app/styles.scss"],"sourcesContent":["body,\r\n#app {\r\n    width: 100%;\r\n    height: 100%;\r\n    background-color: red;\r\n}\r\n"],"names":[],"sourceRoot":""}
