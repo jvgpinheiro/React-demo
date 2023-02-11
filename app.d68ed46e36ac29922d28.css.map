@@ -1,0 +1,1 @@
+{"version":3,"file":"app.d68ed46e36ac29922d28.css","mappings":"AAAA,UAEI,WACA,Y","sources":["webpack://react/./app/styles.scss"],"sourcesContent":["body,\r\n#app {\r\n    width: 100%;\r\n    height: 100%;\r\n}\r\n"],"names":[],"sourceRoot":""}

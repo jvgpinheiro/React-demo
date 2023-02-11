@@ -1,15 +1,23 @@
 import './styles.scss';
 import { StrictMode } from 'react';
-import { render } from 'react-dom';
-import MainApp from './MainAppComponent/MainAppComponent';
+import { createRoot } from 'react-dom/client';
+import MainApp from './components/MainAppComponent/MainAppComponent';
 import React from 'react';
+import AppManager from './controls/AppManager';
+import { generatePersonID } from './stores/utils/StoreUtils';
 
 function App(): JSX.Element {
+    // @ts-ignore
+    window.AppManager = AppManager;
+    // @ts-ignore
+    window.utils = { generatePersonID };
+
     return (
         <StrictMode>
-            <MainApp timesClicked={10} onClick={() => console.log('Parent callback')}></MainApp>
+            <MainApp></MainApp>
         </StrictMode>
     );
 }
 
-render(App(), document.querySelector('#app'));
+const root = createRoot(document.querySelector('#app')!);
+root.render(App());
