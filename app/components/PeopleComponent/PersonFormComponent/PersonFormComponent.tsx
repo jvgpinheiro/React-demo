@@ -5,10 +5,10 @@ import React, { ChangeEvent, FormEvent, useState } from 'react';
 
 let componentLastGlobalID = 0;
 
-function PersonSignUpComponent(): JSX.Element {
+function PersonFormComponent(): JSX.Element {
     const componentID = ++componentLastGlobalID;
-    const inputLabelBaseClass = `person-signup-component-form-input__label`;
-    const inputValueBaseClass = `person-signup-component-form-input__value`;
+    const inputLabelBaseClass = `person-form-component-form-input__label`;
+    const inputValueBaseClass = `person-form-component-form-input__value`;
     const [name, setName] = useState<string>('');
     const [age, setAge] = useState<string>('');
 
@@ -50,9 +50,9 @@ function PersonSignUpComponent(): JSX.Element {
     }
 
     return (
-        <div className="person-signup-component">
-            <form className="person-signup-component-form" onSubmit={onSubmit}>
-                <div className="person-signup-component-form-input">
+        <div className="person-form-component">
+            <form className="person-form-component-form" onSubmit={onSubmit}>
+                <div className="person-form-component-form-input">
                     <label
                         className={`${inputLabelBaseClass} ${inputLabelBaseClass}--name`}
                         htmlFor={`${inputValueBaseClass}--name-${componentID}`}
@@ -68,7 +68,7 @@ function PersonSignUpComponent(): JSX.Element {
                         onChange={(event) => setName(event.target.value)}
                     ></input>
                 </div>
-                <div className="person-signup-component-form-input">
+                <div className="person-form-component-form-input">
                     <label
                         className={`${inputLabelBaseClass} ${inputLabelBaseClass}--age`}
                         htmlFor={`${inputValueBaseClass}--age-${componentID}`}
@@ -90,4 +90,4 @@ function PersonSignUpComponent(): JSX.Element {
     );
 }
 
-export default PersonSignUpComponent;
+export default PersonFormComponent;
