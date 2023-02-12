@@ -1,0 +1,108 @@
+.people-list-component {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-start;
+
+    &-title {
+        font-weight: 600;
+        font-size: 18px;
+        margin-bottom: 10px;
+    }
+
+    &-table {
+        --tr-height: 30px;
+        --td-padding: 6px;
+        --darkest-bg: #34344c;
+        --dark-bg: #3f3f65;
+        --light-bg: #45457c;
+        --text-color: #e8e8e8;
+
+        color: var(--text-color);
+        border: 1px solid var(--text-color);
+        border-spacing: 0;
+        font-size: 13px;
+
+        &-header,
+        &-body {
+            &-item {
+                height: var(--tr-height);
+
+                &-data {
+                    height: var(--tr-height);
+                    padding: var(--td-padding);
+                    padding-right: 0;
+
+                    &__container {
+                        height: 100%;
+                        width: 100%;
+                        display: flex;
+                        justify-content: center;
+                        align-items: center;
+                        padding-right: var(--td-padding);
+                    }
+
+                    &--name {
+                        width: 150px;
+                    }
+
+                    &--age {
+                        width: 45px;
+                    }
+
+                    &--no-separator {
+                        .people-list-component-table-header-item-data__container {
+                            border-right: none;
+                        }
+                    }
+                }
+            }
+        }
+
+        &-header {
+            &-item {
+                background-color: var(--darkest-bg);
+
+                &-data {
+                    &__container {
+                        border-right: 1px solid var(--text-color);
+                    }
+
+                    &:last-child {
+                        .people-list-component-table-header-item-data__container {
+                            border-right: none;
+                        }
+                    }
+                }
+            }
+        }
+
+        &-body {
+            &-item {
+                background-color: var(--light-bg);
+
+                &:nth-child(even) {
+                    background-color: var(--dark-bg);
+                }
+
+                &-data {
+                    &--delete,
+                    &--edit {
+                        .people-list-component-table-body-item-data__container {
+                            span {
+                                cursor: pointer;
+                                user-select: none;
+                            }
+                        }
+                    }
+
+                    &--name {
+                        .people-list-component-table-body-item-data__container {
+                            justify-content: flex-start;
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

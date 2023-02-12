@@ -1,6 +1,6 @@
 import PersonEntity from 'app/stores/peopleStore/entities/PersonEntity';
 import { addPerson } from 'app/stores/peopleStore/PeopleStore';
-import { generatePersonID } from 'app/stores/utils/StoreUtils';
+import { generatePersonID } from 'app/stores/peopleStore/PeopleStore';
 import React, { ChangeEvent, FormEvent, useState } from 'react';
 
 let componentLastGlobalID = 0;

@@ -4,7 +4,7 @@ import { createRoot } from 'react-dom/client';
 import MainApp from './components/MainAppComponent/MainAppComponent';
 import React from 'react';
 import AppManager from './controls/AppManager';
-import { generatePersonID } from './stores/utils/StoreUtils';
+import { generatePersonID } from './stores/peopleStore/PeopleStore';
 
 function App(): JSX.Element {
     // @ts-ignore

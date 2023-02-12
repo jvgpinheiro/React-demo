@@ -1,44 +1,29 @@
 import PersonEntity, { PersonBaseInfoInterface } from './entities/PersonEntity';
+import { load, save, SavablePersonEntity } from './storage/PeopleLocalStorage';
 
 type SubscriberCallback = (peopleMap: Array<PersonEntity>) => void;
-type PeopleMap = Map<number, PersonEntity>;
-type AnyStoredData = { version: number; [key: string]: any };
-type StoredDataV1 = { version: 1; registeredPeople: Array<PersonBaseInfoInterface> };
+type PeopleMap = Map<number, SavablePersonEntity>;
 
-const peopleMap: PeopleMap = new Map();
+const { lastValidID, mapData } = makeStoreData();
+let uniquePersonID: number = lastValidID;
+const peopleMap: PeopleMap = new Map(mapData);
 const listeners = new Set<SubscriberCallback>();
-const versionReaders = new Map<number, (data: AnyStoredData) => void>([[1, readConfigV1]]);
+notifyChanges();
 
-loadFromLocalStorage();
-
-function loadFromLocalStorage(): void {
-    const storedPeople = localStorage.getItem('people');
-    if (!storedPeople) {
-        return;
-    }
-    const parsedData: AnyStoredData = JSON.parse(storedPeople);
-    const readerCallback = versionReaders.get(parsedData.version);
-    readerCallback && readerCallback(parsedData);
-}
-
-function readConfigV1(data: AnyStoredData): void {
-    const { registeredPeople } = data as StoredDataV1;
-    registeredPeople.forEach((person) => {
-        peopleMap.set(person.id, new PersonEntity(person));
-    });
-}
-
-function saveOnLocalStorage(): void {
-    const data: StoredDataV1 = { version: 1, registeredPeople: getPeopleList() };
-    const dataToStore = JSON.stringify(data);
-    console.log(dataToStore);
-    localStorage.setItem('people', dataToStore);
+function makeStoreData(): { lastValidID: number; mapData: Array<Readonly<[number, SavablePersonEntity]>> } {
+    const storedDataOnStart = load();
+    const mapData = storedDataOnStart.list.map(
+        (savablePersonEntity) => [savablePersonEntity.entity.id, savablePersonEntity] as const,
+    );
+    return {
+        lastValidID: storedDataOnStart.lastValidID,
+        mapData,
+    };
 }
 
 export function addPerson(person: PersonBaseInfoInterface): void {
-    peopleMap.set(person.id, person);
-    console.log('Add');
-    saveOnLocalStorage();
+    peopleMap.set(person.id, { entity: person, isDeleted: false });
+    save([...peopleMap.values()]);
     notifyChanges();
 }
 
@@ -46,9 +31,12 @@ export function deletePerson(person: PersonBaseInfoInterface): void;
 export function deletePerson(personID: number): void;
 export function deletePerson(person: PersonBaseInfoInterface | number): void {
     const id = getID(person);
-    peopleMap.delete(id);
-    console.log('Remove');
-    saveOnLocalStorage();
+    const storedPerson = peopleMap.get(id);
+    if (!storedPerson) {
+        return;
+    }
+    peopleMap.set(id, { ...storedPerson, isDeleted: true });
+    save([...peopleMap.values()]);
     notifyChanges();
 }
 
@@ -64,7 +52,11 @@ function getID(person: PersonBaseInfoInterface | number): number {
 }
 
 export function getPeopleList(): Array<PersonEntity> {
-    return [...peopleMap.values()];
+    return [...peopleMap.values()].filter((person) => !person.isDeleted).map((person) => person.entity);
+}
+
+export function generatePersonID(): number {
+    return uniquePersonID++;
 }
 
 function notifyChanges(): void {
