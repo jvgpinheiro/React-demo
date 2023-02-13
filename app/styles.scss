@@ -1,17 +1,24 @@
+html,
 body,
 #app {
     width: 100%;
     height: 100%;
     margin: 0;
+    box-sizing: border-box;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+#app {
+    position: relative;
 
     * {
         box-sizing: border-box;
         font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     }
-
-    > main {
-        padding: 8px;
-    }
 }
 
+@import './global_variables.scss';
+@import './components/MainAppComponent/MainAppComponent.scss';
+@import './components/ModalsComponent/ModalsComponent.scss';
 @import './components/PeopleComponent/PeopleListComponent/PeopleListComponent.scss';
+@import './components/PeopleComponent/PersonFormComponent/PersonFormComponent.scss';

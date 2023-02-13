@@ -1,14 +1,15 @@
 import PersonEntity from 'app/stores/peopleStore/entities/PersonEntity';
 import { addPerson } from 'app/stores/peopleStore/PeopleStore';
 import { generatePersonID } from 'app/stores/peopleStore/PeopleStore';
+import { closeModal } from 'app/stores/modalStore/ModalStore';
 import React, { ChangeEvent, FormEvent, useState } from 'react';
 
 let componentLastGlobalID = 0;
 
 function PersonFormComponent(): JSX.Element {
     const componentID = ++componentLastGlobalID;
-    const inputLabelBaseClass = `person-form-component-form-input__label`;
-    const inputValueBaseClass = `person-form-component-form-input__value`;
+    const inputLabelBaseClass = `person-form-component-form-container-input__label`;
+    const inputValueBaseClass = `person-form-component-form-container-input__value`;
     const [name, setName] = useState<string>('');
     const [age, setAge] = useState<string>('');
 
@@ -49,42 +50,56 @@ function PersonFormComponent(): JSX.Element {
         setAge('');
     }
 
+    function close(): void {
+        closeModal('person-form');
+    }
+
     return (
         <div className="person-form-component">
+            <div className="person-form-component-titlebar">
+                <span className="person-form-component-titlebar-title">Person Registration</span>
+                <span className="person-form-component-titlebar-close" onClick={close}>
+                    X
+                </span>
+            </div>
             <form className="person-form-component-form" onSubmit={onSubmit}>
-                <div className="person-form-component-form-input">
-                    <label
-                        className={`${inputLabelBaseClass} ${inputLabelBaseClass}--name`}
-                        htmlFor={`${inputValueBaseClass}--name-${componentID}`}
-                    >
-                        Name:
-                    </label>
-                    <input
-                        id={`${inputValueBaseClass}--name-${componentID}`}
-                        className={`${inputValueBaseClass} ${inputValueBaseClass}--name`}
-                        type="text"
-                        name="name"
-                        value={name}
-                        onChange={(event) => setName(event.target.value)}
-                    ></input>
+                <div className="person-form-component-form-container">
+                    <div className="person-form-component-form-container-input">
+                        <label
+                            className={`${inputLabelBaseClass} ${inputLabelBaseClass}--name`}
+                            htmlFor={`${inputValueBaseClass}--name-${componentID}`}
+                        >
+                            Name:
+                        </label>
+                        <input
+                            id={`${inputValueBaseClass}--name-${componentID}`}
+                            className={`${inputValueBaseClass} ${inputValueBaseClass}--name`}
+                            type="text"
+                            name="name"
+                            value={name}
+                            onChange={(event) => setName(event.target.value)}
+                        ></input>
+                    </div>
+                    <div className="person-form-component-form-container-input">
+                        <label
+                            className={`${inputLabelBaseClass} ${inputLabelBaseClass}--age`}
+                            htmlFor={`${inputValueBaseClass}--age-${componentID}`}
+                        >
+                            Age:
+                        </label>
+                        <input
+                            id={`${inputValueBaseClass}--age-${componentID}`}
+                            className={`${inputValueBaseClass} ${inputValueBaseClass}--age`}
+                            type="number"
+                            name="age"
+                            value={age}
+                            onChange={onAgeChange}
+                        ></input>
+                    </div>
                 </div>
-                <div className="person-form-component-form-input">
-                    <label
-                        className={`${inputLabelBaseClass} ${inputLabelBaseClass}--age`}
-                        htmlFor={`${inputValueBaseClass}--age-${componentID}`}
-                    >
-                        Age:
-                    </label>
-                    <input
-                        id={`${inputValueBaseClass}--age-${componentID}`}
-                        className={`${inputValueBaseClass} ${inputValueBaseClass}--age`}
-                        type="number"
-                        name="age"
-                        value={age}
-                        onChange={onAgeChange}
-                    ></input>
+                <div className="person-form-component-form-buttons">
+                    <button className="person-form-component-form-buttons-submit">Submit</button>
                 </div>
-                <button>Submit</button>
             </form>
         </div>
     );

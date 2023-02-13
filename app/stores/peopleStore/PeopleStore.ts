@@ -5,7 +5,7 @@ type SubscriberCallback = (peopleMap: Array<PersonEntity>) => void;
 type PeopleMap = Map<number, SavablePersonEntity>;
 
 const { lastValidID, mapData } = makeStoreData();
-let uniquePersonID: number = lastValidID;
+let uniquePersonID: number = lastValidID + 1;
 const peopleMap: PeopleMap = new Map(mapData);
 const listeners = new Set<SubscriberCallback>();
 notifyChanges();

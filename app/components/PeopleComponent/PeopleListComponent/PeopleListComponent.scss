@@ -13,13 +13,12 @@
     &-table {
         --tr-height: 30px;
         --td-padding: 6px;
-        --darkest-bg: #34344c;
-        --dark-bg: #3f3f65;
-        --light-bg: #45457c;
-        --text-color: #e8e8e8;
+        --darkest-bg: var(--darkest-palette);
+        --dark-bg: var(--dark-palette);
+        --light-bg: var(--light-palette);
 
-        color: var(--text-color);
-        border: 1px solid var(--text-color);
+        color: var(--light-text-color);
+        border: 1px solid var(--light-text-color);
         border-spacing: 0;
         font-size: 13px;
 
@@ -65,7 +64,7 @@
 
                 &-data {
                     &__container {
-                        border-right: 1px solid var(--text-color);
+                        border-right: 1px solid var(--light-text-color);
                     }
 
                     &:last-child {

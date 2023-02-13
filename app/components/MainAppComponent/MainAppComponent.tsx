@@ -3,7 +3,7 @@ import PeopleComponent from '../PeopleComponent/PeopleComponent';
 
 function MainApp(): JSX.Element {
     return (
-        <div>
+        <div className="main-app-component">
             <PeopleComponent></PeopleComponent>
         </div>
     );

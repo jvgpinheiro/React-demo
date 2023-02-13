@@ -1,27 +1,25 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import PeopleListComponent from './PeopleListComponent/PeopleListComponent';
 import RegisterPersonComponent from './RegisterPersonComponent/RegisterPersonComponent';
-import PersonFormComponent from './PersonFormComponent/PersonFormComponent';
+import { openModal, closeModal, subscribeClose, unsubscribeClose } from 'app/stores/modalStore/ModalStore';
 
 function PeopleComponent(): JSX.Element {
     const [isFormVisible, setFormVisibility] = useState<boolean>(false);
 
-    function renderFormConditionally(): JSX.Element | undefined {
-        if (!isFormVisible) {
-            return;
-        }
-        return <PersonFormComponent></PersonFormComponent>;
-    }
+    useEffect(() => {
+        const closeCallback = () => setFormVisibility(false);
+        subscribeClose(closeCallback);
+        return () => unsubscribeClose(closeCallback);
+    }, []);
+
+    useEffect(() => {
+        isFormVisible ? openModal('person-form') : closeModal('person-form');
+    }, [isFormVisible]);
 
     return (
         <div className="people-component">
             <PeopleListComponent></PeopleListComponent>
-            <RegisterPersonComponent
-                isRegistering={isFormVisible}
-                register={() => setFormVisibility(true)}
-                stopRegistering={() => setFormVisibility(false)}
-            ></RegisterPersonComponent>
-            {renderFormConditionally()}
+            <RegisterPersonComponent register={() => setFormVisibility(true)}></RegisterPersonComponent>
         </div>
     );
 }

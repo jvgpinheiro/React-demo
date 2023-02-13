@@ -1,0 +1,19 @@
+.modals-component {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+
+    &--closed {
+        display: none;
+    }
+
+    &-overlay {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background-color: #3f3f654a;
+        width: 100%;
+        height: 100%;
+    }
+}

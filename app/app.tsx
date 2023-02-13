@@ -2,6 +2,7 @@ import './styles.scss';
 import { StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';
 import MainApp from './components/MainAppComponent/MainAppComponent';
+import ModalsComponent from './components/ModalsComponent/ModalsComponent';
 import React from 'react';
 import AppManager from './controls/AppManager';
 import { generatePersonID } from './stores/peopleStore/PeopleStore';
@@ -15,6 +16,7 @@ function App(): JSX.Element {
     return (
         <StrictMode>
             <MainApp></MainApp>
+            <ModalsComponent></ModalsComponent>
         </StrictMode>
     );
 }
