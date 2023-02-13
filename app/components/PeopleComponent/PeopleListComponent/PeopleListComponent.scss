@@ -88,9 +88,17 @@
                     &--delete,
                     &--edit {
                         .people-list-component-table-body-item-data__container {
+                            transition: 0.2s linear;
+
                             span {
                                 cursor: pointer;
                                 user-select: none;
+                            }
+
+                            &:hover {
+                                text-decoration: underline;
+                                font-size: 13px;
+                                color: var(--highlight-light-text-color);
                             }
                         }
                     }

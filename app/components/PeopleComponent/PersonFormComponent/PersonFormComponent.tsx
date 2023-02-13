@@ -4,14 +4,17 @@ import { generatePersonID } from 'app/stores/peopleStore/PeopleStore';
 import { closeModal } from 'app/stores/modalStore/ModalStore';
 import React, { ChangeEvent, FormEvent, useState } from 'react';
 
+export type ComponentProps = { person?: PersonEntity };
+
 let componentLastGlobalID = 0;
 
-function PersonFormComponent(): JSX.Element {
+function PersonFormComponent({ person }: ComponentProps): JSX.Element {
+    const isEditionForm = !!person;
     const componentID = ++componentLastGlobalID;
     const inputLabelBaseClass = `person-form-component-form-container-input__label`;
     const inputValueBaseClass = `person-form-component-form-container-input__value`;
-    const [name, setName] = useState<string>('');
-    const [age, setAge] = useState<string>('');
+    const [name, setName] = useState<string>(person?.name ?? '');
+    const [age, setAge] = useState<string>(`${person?.age}` ?? '');
 
     function onSubmit(event: FormEvent): void {
         event.preventDefault();
@@ -19,9 +22,11 @@ function PersonFormComponent(): JSX.Element {
             alert('Invalid data');
             return;
         }
-        const person = new PersonEntity({ id: generatePersonID(), name, age: +age });
-        addPerson(person);
+        const id = isEditionForm && person ? person.id : generatePersonID();
+        const newPerson = new PersonEntity({ id, name, age: +age });
+        addPerson(newPerson);
         clearForm();
+        closeModal('person-form');
     }
 
     function onAgeChange(event: ChangeEvent<HTMLInputElement>): void {
@@ -57,7 +62,14 @@ function PersonFormComponent(): JSX.Element {
     return (
         <div className="person-form-component">
             <div className="person-form-component-titlebar">
-                <span className="person-form-component-titlebar-title">Person Registration</span>
+                <div className="person-form-component-titlebar-title">
+                    <span className="person-form-component-titlebar-title-type">
+                        {isEditionForm && person ? `Person Edit` : 'Person Registration'}
+                    </span>
+                    {isEditionForm && person ? (
+                        <span className="person-form-component-titlebar-title-id">{`(id: ${person.id})`}</span>
+                    ) : undefined}
+                </div>
                 <span className="person-form-component-titlebar-close" onClick={close}>
                     X
                 </span>

@@ -11,12 +11,29 @@
         display: flex;
         justify-content: space-between;
         align-items: center;
-        font-size: 15px;
-        font-weight: 600;
+
+        &-title {
+            display: flex;
+            justify-content: flex-start;
+            align-items: baseline;
+
+            &-type {
+                font-size: 15px;
+                font-weight: 600;
+                margin-right: 3px;
+            }
+
+            &-id {
+                font-size: 12px;
+                font-weight: 400;
+            }
+        }
 
         &-close {
             user-select: none;
             cursor: pointer;
+            font-size: 13px;
+            font-weight: 600;
         }
     }
 
@@ -51,7 +68,7 @@
                 }
 
                 &__label {
-                    width: 45px;
+                    width: 35px;
                     margin-right: 5px;
                     text-align: right;
                 }

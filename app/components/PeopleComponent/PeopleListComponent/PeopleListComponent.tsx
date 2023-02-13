@@ -1,5 +1,6 @@
+import { openModal } from 'app/stores/modalStore/ModalStore';
 import React, { useState, useEffect } from 'react';
-import { getPeopleList, subscribe, unsubscribe } from '../../../stores/peopleStore/PeopleStore';
+import { deletePerson, getPeopleList, subscribe, unsubscribe } from '../../../stores/peopleStore/PeopleStore';
 
 function PeopleListComponent(): JSX.Element {
     const [list, setList] = useState(getPeopleList());
@@ -40,16 +41,20 @@ function PeopleListComponent(): JSX.Element {
             </tr>
         );
     }
+
     function makeListItems(): Array<JSX.Element> {
         return list.map((person) => (
             <tr className="people-list-component-table-body-item" key={person.id}>
                 <td className="people-list-component-table-body-item-data people-list-component-table-body-item-data--delete people-list-component-table-body-item-data--no-separator">
-                    <div className="people-list-component-table-body-item-data__container">
+                    <div className="people-list-component-table-body-item-data__container" onClick={() => deletePerson(person)}>
                         <span>Delete</span>
                     </div>
                 </td>
                 <td className="people-list-component-table-body-item-data people-list-component-table-body-item-data--edit">
-                    <div className="people-list-component-table-body-item-data__container">
+                    <div
+                        className="people-list-component-table-body-item-data__container"
+                        onClick={() => openModal('person-form', { person })}
+                    >
                         <span>Edit</span>
                     </div>
                 </td>

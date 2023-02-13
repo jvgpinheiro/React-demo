@@ -1,27 +1,35 @@
-import {} from '../../components/PeopleComponent/PersonFormComponent/PersonFormComponent';
+import { ComponentProps as PersonFormProps } from '../../components/PeopleComponent/PersonFormComponent/PersonFormComponent';
 
-export type ModalTypes = '' | 'person-form';
-type SubscriberCallback = (currentModal: ModalTypes) => void;
+type AllComponentProps = {
+    '': undefined;
+    'person-form': PersonFormProps;
+};
+export type ModalTypes = keyof AllComponentProps;
+export type TakePropsFromType<T extends ModalTypes> = AllComponentProps[T];
+type SubscriberCallback = <T extends ModalTypes>(currentModal: T, props?: TakePropsFromType<T>) => void;
 
 let currentModal: ModalTypes = '';
+let currentProps: TakePropsFromType<ModalTypes> = undefined;
 const openListeners = new Map<ModalTypes, Set<SubscriberCallback>>();
 const closeListeners = new Map<ModalTypes, Set<SubscriberCallback>>();
 
-export function openModal(modal: ModalTypes): void {
+export function openModal<T extends ModalTypes>(modal: T, props?: TakePropsFromType<T>): void {
     currentModal = modal;
-    notifyOpen();
+    currentProps = props;
+    notifyOpen(currentModal);
 }
 
 export function closeModal(modal: ModalTypes): void {
     if (currentModal !== modal) {
         return;
     }
-    notifyClose();
+    notifyClose(currentModal);
     currentModal = '';
+    currentProps = undefined;
 }
 
 export function closeAnyModal(): void {
-    notifyClose();
+    notifyClose(currentModal);
     currentModal = '';
 }
 
@@ -29,19 +37,19 @@ export function isAnyModalOpen(): boolean {
     return currentModal !== '';
 }
 
-function notifyOpen(): void {
+function notifyOpen<T extends ModalTypes>(modal: T): void {
     notify(openListeners, '');
-    notify(openListeners, currentModal);
+    notify(openListeners, modal);
 }
 
-function notifyClose(): void {
+function notifyClose<T extends ModalTypes>(modal: T): void {
     notify(closeListeners, '');
-    notify(closeListeners, currentModal);
+    notify(closeListeners, modal);
 }
 
-function notify(map: Map<ModalTypes, Set<SubscriberCallback>>, modalListenerType: ModalTypes): void {
+function notify<T extends ModalTypes>(map: Map<ModalTypes, Set<SubscriberCallback>>, modalListenerType: T): void {
     const storedListeners: Set<SubscriberCallback> = map.get(modalListenerType) ?? new Set([]);
-    storedListeners.forEach((callback) => callback(currentModal));
+    storedListeners.forEach((callback) => callback(currentModal, currentProps));
 }
 
 export function subscribeOpen(callback: SubscriberCallback, modal: ModalTypes = ''): void {
